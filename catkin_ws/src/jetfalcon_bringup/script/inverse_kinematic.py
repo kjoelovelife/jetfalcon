@@ -37,6 +37,9 @@ class InverseKinematic(object):
         # setup publisher 
         self.publisher = rospy.Publisher("~wheels_cmd", WheelsCmd, queue_size=1)
 
+        # setup service-server
+        self.service_server = rospy.Service("~save_parameter", Empty, self.callback_service_server)
+
         # setup timer 
         self.timer = rospy.Timer(rospy.Duration.from_sec(0.1), self.callback_timer)
 
@@ -62,6 +65,11 @@ class InverseKinematic(object):
         self.wheels_cmd.right.data *= (self.ros_parameter["~gain"] + self.ros_parameter["~trim"] ) * self.ros_parameter["~rpm_5v"] / 60.0 / 5.0
         self.wheels_cmd.left.data *= (self.ros_parameter["~gain"] - self.ros_parameter["~trim"] ) * self.ros_parameter["~rpm_5v"] / 60.0 / 5.0
         self.publisher.publish(self.wheels_cmd)
+
+    def callback_service_server(self, req):
+        file_name = "{}/param/{}.yaml".format(rospkg.RosPack().get_path(self.package), self.veh_name)
+        return EmptyResponse
+
 
     def callback_timer(self, event):
         pass
