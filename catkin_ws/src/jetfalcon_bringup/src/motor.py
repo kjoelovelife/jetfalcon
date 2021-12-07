@@ -59,12 +59,8 @@ class Motor(object):
                 self.ros_parameter[key] = value
                 rospy.set_param(key, self.ros_parameter[key])
                 rospy.loginfo("[{}] Parameter \"{}\" change! Now is \"{}\"".format(self.node_name, key, self.ros_parameter[key]))
-        if not self.msg_status:
-            self.motor["left"].setSpeed(0)
-            self.motor["right"].setSpeed(0)
 
     def callback_wheels_cmd(self, msg):
-        self.msg_status = True
         left = msg.left.data * self.ros_parameter["~alpha"]
         right = msg.right.data * self.ros_parameter["~alpha"]
 
@@ -82,7 +78,7 @@ class Motor(object):
         right = int(min(max(abs(right * self.motor["max_pwm"]), 0), self.motor["max_pwm"]))
         self.motor["left"].setSpeed(left)
         self.motor["right"].setSpeed(right)
-        self.msg_status = False
+
 
     def on_shutdown(self):
         self.motor["left"].setSpeed(0)

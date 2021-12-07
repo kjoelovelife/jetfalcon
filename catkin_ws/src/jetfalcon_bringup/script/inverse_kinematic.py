@@ -29,7 +29,7 @@ class InverseKinematic(object):
         # setup variable
         self.wheels_cmd = WheelsCmd()
         self.mm_to_m = math.pow(10, -3)
-        self.initialize = True
+        self.msg_status = False
 
         # setup subscriber
         self.subscriber = rospy.Subscriber("~cmd_vel", Twist, self.callback_cmd_vel)
@@ -38,7 +38,7 @@ class InverseKinematic(object):
         self.publisher = rospy.Publisher("~wheels_cmd", WheelsCmd, queue_size=1)
 
         # setup timer 
-        self.timer = rospy.Timer(rospy.Duration.from_sec(1.0), self.callback_timer)
+        self.timer = rospy.Timer(rospy.Duration.from_sec(0.1), self.callback_timer)
 
         # setup rqt_reconfigure
         self.rqt_reconfigure = Server(InverseKinematicConfig, self.callback_rqt_reconfigure)
@@ -50,18 +50,17 @@ class InverseKinematic(object):
             unit = {
                 "~length": "(mm)",
                 "~radius": "(mm)",
-                "~rpm_5v": "(rpm/s)",
+                "~rpm_5v": "(rpm/min)",
             }.get(key, "")
             rospy.loginfo("[{}] {} = {} {}".format(self.node_name, key, self.ros_parameter[key], unit))
-
 
     def callback_cmd_vel(self, msg):
         velocity = msg.linear.x
         omega = msg.angular.z
         self.wheels_cmd.right.data =  ((2 * velocity) + (omega * self.ros_parameter["~length"] * self.mm_to_m)) / (2 * self.ros_parameter["~radius"] * self.mm_to_m)
         self.wheels_cmd.left.data  =  ((2 * velocity) - (omega * self.ros_parameter["~length"] * self.mm_to_m)) / (2 * self.ros_parameter["~radius"] * self.mm_to_m)
-        #self.wheels_cmd.right *= (self.ros_parameter["~gain"] + self.ros_parameter["~trim"] ) / self.ros_parameter["~rpm_5v"]
-        #self.wheels_cmd.right *= (self.ros_parameter["~gain"] - self.ros_parameter["~trim"] ) / self.ros_parameter["~rpm_5v"]
+        self.wheels_cmd.right.data *= (self.ros_parameter["~gain"] + self.ros_parameter["~trim"] ) * self.ros_parameter["~rpm_5v"] / 60.0 / 5.0
+        self.wheels_cmd.left.data *= (self.ros_parameter["~gain"] - self.ros_parameter["~trim"] ) * self.ros_parameter["~rpm_5v"] / 60.0 / 5.0
         self.publisher.publish(self.wheels_cmd)
 
     def callback_timer(self, event):
@@ -69,11 +68,7 @@ class InverseKinematic(object):
 
     def callback_rqt_reconfigure(self, config, level):
         for key in config["groups"]["parameters"].keys():
-            if self.initialize == True:
-                config[key] = self.ros_parameter["~{}".format(key)]
-                self.initialize = False
-            else:
-               self.ros_parameter["~{}".format(key)] =  config[key]
+            self.ros_parameter["~{}".format(key)] =  config[key]
         return config
 
 
