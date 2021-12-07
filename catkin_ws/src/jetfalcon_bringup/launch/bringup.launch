@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- arguments of launch -->
+    <arg name="vehicle" default="$(env VEHICLE_NAME)"/>
+    <arg name="pkg_name" default="jetfalcon_bringup"/>
+    <arg name="node_motor" default="motor"/>
+    <arg name="node_inverse_kinematic" default="inverse_kinematic"/>
+    <arg name="node_initialize_reconfigure" default="initialize_reconfigure"/>
+
+
+    <group ns="$(arg vehicle)">
+
+        <!-- node_inverse_kinematic -->
+        <remap from="inverse_kinematic/cmd_vel" to="/cmd_vel"/>
+        <node pkg="$(arg pkg_name)" type="$(arg node_inverse_kinematic).py" name="$(arg node_inverse_kinematic)" output="screen">
+            <rosparam command="load" file="$(find jetfalcon_bringup)/param/$(arg node_inverse_kinematic).yaml"/>
+        </node>
+
+        <!-- node_initialize_reconfigure -->
+        <node pkg="$(arg pkg_name)" type="$(arg node_initialize_reconfigure).py" name="$(arg node_initialize_reconfigure)" output="log">
+            <param name="target" type="str" value="/$(arg vehicle)/$(arg node_inverse_kinematic)"/>
+        </node>
+
+        <!-- node_motor -->
+        <remap from="motor/wheels_cmd" to="/$(arg vehicle)/$(arg node_inverse_kinematic)/wheels_cmd"/>
+        <node pkg="$(arg pkg_name)" type="$(arg node_motor).py" name="$(arg node_motor)" output="screen">
+            <rosparam command="load" file="$(find jetfalcon_bringup)/param/$(arg node_motor).yaml"/>
+        </node>
+
+    </group>
+
+
+
+
+</launch>
