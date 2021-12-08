@@ -41,10 +41,11 @@ project_name="jetfalcon"
 
 # Functions 
 power_mode(){
-    """Setup Jetson nano power mode
+<<'###comment'
+    Setup Jetson nano power mode.
     Args:
       hardware: 
-    """
+###comment
     architecture=$1
     if [ "${architecture}" == "aarch64"  ] ; then
         sudo nvpmodel -m0
@@ -55,10 +56,11 @@ power_mode(){
 }
 
 apt_install(){
-    '''Use apt install ros2 dependencies for this project
+<<<'###comment'
+    Use apt install ros2 dependencies for this project
     Args:
       $1: project name
-    '''
+###comment
     _ros_distro=$1
     sudo apt install python-pip \
                      python-frozendict \
@@ -99,10 +101,11 @@ setup_authority(){
 }
 
 setup_ydlidar(){
-    '''add udev rules for Ydlidar
+<<'###comment'
+    Add udev rules for Ydlidar
     Args:
       $1: project name
-    '''
+###comment
     workspace="$HOME/$1/catkin_ws/src/ydlidar_ros"
     echo "Setup YDLidar X4 , and it information in ~/${workspace}/README.md "
     cd ~/${workspace}/startup
@@ -112,8 +115,23 @@ setup_ydlidar(){
     sudo udevadm trigger   
 }
 
+no_machine(){
+<<'###comment'
+    Downloads and Install NoMachine
+###comment
+
+    if test -d "/usr/NX"; then
+        echo "NoMachine existed and skip the installations step."
+    else
+        echo "Downloads Nomachine in $HOME/Downloads and install from the directory."
+        wget https://www.nomachine.com/free/arm/v8/deb -O ~/Downloads/nomachine.deb
+        sudo dpkg -i ~/Downloads/nomachine.deb
+    fi
+}
+
 # Install
 power_mode $hardware_architecture
 apt_install $ros_distro
 setup_authority
 setup_ydlidar $project_name  
+no_machine

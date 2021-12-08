@@ -13,6 +13,8 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   jetfalcon_msgs
+  ydlidar_ros
+  rf2o_laser_odometry
 )
 
 ## System dependencies are found with CMake's conventions

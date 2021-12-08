@@ -7,26 +7,25 @@
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="ros@todo.todo">ros</maintainer>
+  <maintainer email="weichih.lin@protonmail.com">Wei-Chih Lin</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
-
+  <license>Apache2.0</license>
 
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
   <!-- <url type="website">http://wiki.ros.org/bringup</url> -->
-
+  <url type="website">http://github.com/kjoelovelife/jetfalcon/jetfalcon_bringup</url>
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
   <!-- Authors do not have to be maintainers, but could be -->
   <!-- Example: -->
   <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
-
+  <author email="weichih.lin@protonmail.com">Wei-Chih Lin</author>
 
   <!-- The *depend tags are used to specify dependencies -->
   <!-- Dependencies can be catkin packages or system dependencies -->
@@ -55,18 +54,24 @@
   <build_depend>rospy</build_depend>
   <build_depend>std_msgs</build_depend>
   <build_depend>jetfalcon_msgs</build_depend>
+  <build_depend>ydlidar_ros</build_depend>
+  <build_depend>rf2o_laser_odometry</build_depend>
 
   <build_export_depend>geometry_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>rospy</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
   <build_export_depend>jetfalcon_msgs</build_export_depend>
+  <build_export_depend>ydlidar_ros</build_export_depend>
+  <build_export_depend>rf2o_laser_odometry</build_export_depend>
 
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>jetfalcon_msgs</exec_depend>
+  <exec_depend>ydlidar_ros</exec_depend>
+  <exec_depend>rf2o_laser_odometry</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

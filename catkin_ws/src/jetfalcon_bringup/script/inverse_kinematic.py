@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, sys, argparse, errno, yaml, time, datetime, math
+import yaml, datetime, math
 import rospy, rospkg
 import numpy as np
 from geometry_msgs.msg import Twist
@@ -18,6 +18,7 @@ class InverseKinematic(object):
 
         # setup ROS parameter
         self.ros_parameter = {
+            "~calibration_time": "2021-12-08",
             "~length": 125.0,     # mm
             "~radius": 65.0 / 2,  # mm
             "~gain": 1.0,
@@ -38,7 +39,7 @@ class InverseKinematic(object):
         self.publisher = rospy.Publisher("~wheels_cmd", WheelsCmd, queue_size=1)
 
         # setup service-server
-        self.service_server = rospy.Service("~save_parameter", Empty, self.callback_service_server)
+        self.service_server = rospy.Service("~save_calibration", Empty, self.callback_service_server)
 
         # setup timer 
         self.timer = rospy.Timer(rospy.Duration.from_sec(0.1), self.callback_timer)
@@ -67,8 +68,18 @@ class InverseKinematic(object):
         self.publisher.publish(self.wheels_cmd)
 
     def callback_service_server(self, req):
-        file_name = "{}/param/{}.yaml".format(rospkg.RosPack().get_path(self.package), self.veh_name)
-        return EmptyResponse
+        file_name = "{}/param/inverse_kinematic/{}.yaml".format(rospkg.RosPack().get_path(self.package), self.veh_name)
+        time_format = "%Y_%m_%d_%H_%M_%S"
+        self.ros_parameter["~calibration_time"] = datetime.datetime.now().strftime(time_format)
+        yaml_file = {}
+        for key in self.ros_parameter.keys():
+            yaml_file[key[1:]] = self.ros_parameter[key]
+            rospy.loginfo("[{}] Set parameter {} = {}.".format(self.node_name, key, self.ros_parameter[key]))
+        with open(file_name, 'w') as outfile:
+            outfile.write(yaml.dump(yaml_file, default_flow_style=False))
+
+        rospy.loginfo("[{}] Save completed! You can check the file \"{}\"".format(self.node_name, file_name))
+        return EmptyResponse()
 
 
     def callback_timer(self, event):

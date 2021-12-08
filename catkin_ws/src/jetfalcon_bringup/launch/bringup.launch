@@ -7,6 +7,9 @@
     <arg name="node_motor" default="motor"/>
     <arg name="node_inverse_kinematic" default="inverse_kinematic"/>
     <arg name="node_initialize_reconfigure" default="initialize_reconfigure"/>
+    <arg name="node_ydlidar" default="ydlidar_node"/>
+    <arg name="node_odometry" default="rf2o_laser_odometry"/>
+    <arg name="frequency" default="8.0"/>
 
 
     <group ns="$(arg vehicle)">
@@ -28,7 +31,45 @@
             <rosparam command="load" file="$(find jetfalcon_bringup)/param/$(arg node_motor)/$(arg vehicle).yaml"/>
         </node>
 
+        <!-- node_ydlidar -->
+        <node pkg="ydlidar_ros" type="$(arg node_ydlidar)" name="$(arg node_ydlidar)" output="screen" respawn="false">
+            <param name="port"             type="string" value="/dev/ydlidar"/>  
+            <param name="baudrate"         type="int" value="128000"/>  
+            <param name="frame_id"         type="string" value="/$(arg vehicle)/laser_frame"/>
+            <param name="resolution_fixed" type="bool"   value="true"/>
+            <param name="auto_reconnect"   type="bool"   value="true"/>
+            <param name="reversion"        type="bool"   value="false"/>
+            <param name="angle_min"        type="double" value="-180" />
+            <param name="angle_max"        type="double" value="180" />
+            <param name="range_min"        type="double" value="0.1" />
+            <param name="range_max"        type="double" value="12.0" />
+            <param name="ignore_array"     type="string" value="" />
+            <param name="frequency"        type="double" value="$(arg frequency)"/>
+            <param name="samp_rate"        type="int"    value="5"/>
+        </node>
+
+        <!-- static_transform_publisher -->
+        <node pkg="tf" type="static_transform_publisher" name="base_link_to_base_footprint"
+          args="0.0 0.0 -0.065 0.0 0.0 0.0 /$(arg vehicle)/base_link /$(arg vehicle)/base_footprint 40" />
+
+        <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser4"
+          args="0.0 0.0 0.065 3.1415927 0.0 0.0 /$(arg vehicle)/base_link /$(arg vehicle)/laser_frame 40" />
+
+        <!-- node_odometry -->
+        <!-- more information can check the package rf2o_laser_odometry -->
+
+        <node pkg="$(arg node_odometry)" type="$(arg node_odometry)_node" name="$(arg node_odometry)">
+            <param name="laser_scan_topic"      type="str" value="/$(arg vehicle)/scan"/>
+            <param name="odom_topic"            type="str" value="/odom_rf2o"/>
+            <param name="base_frame_id"         type="str" value="/$(arg vehicle)/base_link"/>
+            <param name="odom_frmae_id"         type="str" value="/odom"/>
+            <param name="init_pose_from_topic"  type="str" value=""/>
+            <param name="freq"                  type="double" value="$(arg frequency)"/>
+        </node>
+
     </group>
+
+
 
 
 
