@@ -1,0 +1,12 @@
+port: "/dev/ydlidar"
+baudrate: 128000
+resolution_fixed: true
+auto_reconnect: true
+reversion: false
+angle_min: -180
+angle_max: 180
+range_min: 0.1
+range_max: 12.0
+ignore_array: ""
+frequency: 8.0
+samp_rate: 5

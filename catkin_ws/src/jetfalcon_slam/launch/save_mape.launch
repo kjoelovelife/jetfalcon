@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="vehicle" default="$(env VEHICLE_NAME)" doc="Name of vehicle."/>
+    <arg name="pkg_name" default="map_server"/>
+    <arg name="node_name" default="map_saver"/>
+    <arg name="map_name" default="$(arg vehicle)"/>
+
+    <!-- node map_server -->>
+    <node pkg="$(arg pkg_name)" type="$(arg node_name)" name="$(arg node_name)" args="-f $(find jetfalcon_slam)/map/$(arg map_name)" output="screen"/>
+
+</launch>

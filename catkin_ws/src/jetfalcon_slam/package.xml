@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>jetfalcon_bringup</name>
+  <name>jetfalcon_slam</name>
   <version>0.0.0</version>
-  <description>The bringup package</description>
+  <description>The jetfalcon_slam package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -15,17 +15,19 @@
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
   <license>Apache2.0</license>
 
+
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/bringup</url> -->
-  <url type="website">http://github.com/kjoelovelife/jetfalcon/jetfalcon_bringup</url>
+  <url type="website">http://github.com/kjoelovelife/jetfalcon/jetfalcon_slam</url>
+
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
   <!-- Authors do not have to be maintainers, but could be -->
   <!-- Example: -->
   <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
   <author email="weichih.lin@protonmail.com">Wei-Chih Lin</author>
+
 
   <!-- The *depend tags are used to specify dependencies -->
   <!-- Dependencies can be catkin packages or system dependencies -->
@@ -47,34 +49,36 @@
   <!--   <test_depend>gtest</test_depend> -->
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
-
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>geometry_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>rospy</build_depend>
+  <build_depend>sensor_msgs</build_depend>
   <build_depend>std_msgs</build_depend>
-  <build_depend>jetfalcon_msgs</build_depend>
-  <build_depend>ydlidar_ros</build_depend>
-  <build_depend>rf2o_laser_odometry</build_depend>
   <build_depend>tf</build_depend>
+  <build_depend>gmapping</build_depend>
+  <build_depend>map_server</build_depend>
 
   <build_export_depend>geometry_msgs</build_export_depend>
+  <build_export_depend>nav_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>sensor_msgs</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
-  <build_export_depend>jetfalcon_msgs</build_export_depend>
-  <build_export_depend>ydlidar_ros</build_export_depend>
-  <build_export_depend>rf2o_laser_odometry</build_export_depend>
   <build_export_depend>tf</build_export_depend>
+  <build_export_depend>gmapping</build_export_depend>
+  <build_export_depend>map_server</build_export_depend>
 
   <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>rospy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>std_msgs</exec_depend>
-  <exec_depend>jetfalcon_msgs</exec_depend>
-  <exec_depend>ydlidar_ros</exec_depend>
-  <exec_depend>rf2o_laser_odometry</exec_depend>
   <exec_depend>tf</exec_depend>
+  <exec_depend>gmapping</exec_depend>
+  <exec_depend>map_server</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

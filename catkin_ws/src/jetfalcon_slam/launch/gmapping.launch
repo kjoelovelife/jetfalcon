@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="vehicle" default="$(env VEHICLE_NAME)" doc="Name of vehicle."/>
+    <arg name="open_rviz" default="false" doc="open rviz or not"/>
+    <arg name="pkg_name" default="gmapping"/>
+    <arg name="odom_frame" default="odom"/>
+    <arg name="base_frame" default="base_footprint"/>
+
+    <!-- node gmapping -->>
+    <remap from="scan" to="/$(arg vehicle)/scan"/>
+    <node pkg="$(arg pkg_name)" type="slam_$(arg pkg_name)" name="slam_$(arg pkg_name)" output="screen">
+        <rosparam command="load" file="$(find jetfalcon_slam)/param/$(arg vehicle).yaml"/>
+        <param name="odom_frame" type="str" value="$(arg odom_frame)"/>
+        <param name="base_frame" type="str" value="/$(arg vehicle)/$(arg base_frame)"/>
+    </node>
+
+    <group if="$(arg open_rviz)">
+        <node pkg="rviz" type="rviz" name="rviz" required="true" 
+            args="-d $(find jetfalcon_slam)/rviz/jetfalcon_slam.rviz"/>    
+    </group>
+
+</launch>
