@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="vehicle" default="$(env VEHICLE_NAME)" doc="Name of vehicle."/>
+    <arg name="pkg_name" default="jetfalcon_nav"/>
+    <arg name="pkg_path" default="$(find jetfalcon_nav)"/>
+    <arg name="map_file" doc="Which map do you want ot use."/>
+    <arg name="use_rviz" default="false"/>
+    <arg name="local_planner" default="dwa" doc="Which local planner do you want to use. Now can use [dwa] or [teb]">
+
+    <!-- AMCL arg -->
+    <arg name="amcl_init_x" default="0"/>
+    <arg name="amcl_init_y" default="0"/>
+    <arg name="amcl_init_a" default="0"/>
+
+    <!-- map_server -->
+    <node name="map_server" pkg="map_server" type="map_server" args="$(find jetfalcon_slam)/map/$(arg map_file)"/>
+
+    <!-- amcl -->
+    <node pkg="amcl" type="amcl" name="amcl" output="screen">
+        <rosparam command="load" file="$(arg pkg_path)/param/amcl/default.yaml"/>
+    </node>
+
+    <!-- Navigation stack -->
+    <!-- move_base -->
+    <node>
+        <!-- parameters -->>
+        <!-- local_planner -->
+        <rosparam command="load" file="$(arg pkg_path)/param/local_planner/$(arg local_planner).yaml"/>
+
+        <!-- local_costmap -->
+        <rosparam command="load" file="$(arg pkg_path)/param/local_costmap/default.yaml"/>
+
+        <!-- global_planner -->
+        <rosparam command="load" file="$(arg pkg_path)/param/global_planner/default.yaml"/>
+
+        <!-- global_costmap -->
+        <rosparam command="load" file="$(arg pkg_path)/param/global_costmap/default.yaml"/>
+
+        <!-- move_base -->
+        <rosparam command="load" file="$(arg pkg_path)/param/move_base/default.yaml"/>
+
+    </node>
+
+</launch>
