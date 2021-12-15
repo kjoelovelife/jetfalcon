@@ -37,7 +37,3 @@ planner_frequency: 10.0       # The rate in Hz at which to run the global planni
                               ## New in navigation 1.6.0
 max_planning_retries: -1      # How many times to allow for planning retries before executing recovery behaviors. 
                               ## A value of -1.0 corresponds to an infinite retries.
-
-
-
-

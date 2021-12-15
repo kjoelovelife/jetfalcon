@@ -33,22 +33,22 @@
         <!-- node_ydlidar -->
         <node pkg="ydlidar_ros" type="$(arg node_ydlidar)" name="$(arg node_ydlidar)" output="screen" respawn="false">
             <rosparam command="load" file="$(find jetfalcon_bringup)/param/$(arg node_ydlidar)/$(arg vehicle).yaml"/>
-            <param name="frame_id" type="string" value="/$(arg vehicle)/laser_frame"/>
+            <param name="frame_id" type="string" value="$(arg vehicle)_laser_frame"/>
         </node>
 
         <!-- static_transform_publisher -->
         <node pkg="tf" type="static_transform_publisher" name="base_footprint_to_base_link"
-          args="0.0 0.0 0.065 0.0 0.0 0.0 /$(arg vehicle)/base_footprint /$(arg vehicle)/base_link 40" />
+          args="0.0 0.0 0.065 0.0 0.0 0.0 $(arg vehicle)_base_footprint $(arg vehicle)_base_link 40" />
 
         <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser4"
-          args="0.0 0.0 0.065 3.1415927 0.0 0.0 /$(arg vehicle)/base_link /$(arg vehicle)/laser_frame 40" />
+          args="0.0 0.0 0.065 3.1415927 0.0 0.0 $(arg vehicle)_base_link $(arg vehicle)_laser_frame 40" />
 
         <!-- node_odometry -->
         <!-- more information can check the package rf2o_laser_odometry -->
         <node pkg="$(arg node_odometry)" type="$(arg node_odometry)_node" name="$(arg node_odometry)">   
             <param name="laser_scan_topic"      type="str" value="/$(arg vehicle)/scan"/>           <!-- topic where the lidar scans are being published -->         
             <param name="odom_topic"            type="str" value="/$(arg vehicle)/odom_rf2o"/>      <!-- topic where tu publish the odometry estimations -->
-            <param name="base_frame_id"         type="str" value="/$(arg vehicle)/base_footprint"/> <!-- frame_id (tf) of the mobile robot base. A tf transform from the laser_frame to the base_frame is mandatory -->
+            <param name="base_frame_id"         type="str" value="$(arg vehicle)_base_footprint"/> <!-- frame_id (tf) of the mobile robot base. A tf transform from the laser_frame to the base_frame is mandatory -->
             <param name="odom_frmae_id"         type="str" value="odom"/>                           <!-- frame_id (tf) to publish the odometry estimations -->
             <rosparam command="load" file="$(find jetfalcon_bringup)/param/$(arg node_odometry)/$(arg vehicle).yaml"/>
         </node>

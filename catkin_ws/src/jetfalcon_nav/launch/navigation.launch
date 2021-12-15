@@ -3,43 +3,55 @@
 <launch>
     <arg name="vehicle" default="$(env VEHICLE_NAME)" doc="Name of vehicle."/>
     <arg name="pkg_name" default="jetfalcon_nav"/>
+    <arg name="node_name" default="move_base"/>
     <arg name="pkg_path" default="$(find jetfalcon_nav)"/>
     <arg name="map_file" doc="Which map do you want ot use."/>
     <arg name="use_rviz" default="false"/>
-    <arg name="local_planner" default="dwa" doc="Which local planner do you want to use. Now can use [dwa] or [teb]">
-
-    <!-- AMCL arg -->
-    <arg name="amcl_init_x" default="0"/>
-    <arg name="amcl_init_y" default="0"/>
-    <arg name="amcl_init_a" default="0"/>
+    <arg name="global_planner" default="global_planner"/>
+    <arg name="local_planner" default="dwa" doc="Which local planner do you want to use. Now can use [dwa] or [teb]"/>
+    <arg name="open_rviz" default="false" doc="open rviz or not"/>
+    <arg name="costmap_plugin_sensor_source" default="obstacle_layer/laser_scan_sensor"/>
 
     <!-- map_server -->
     <node name="map_server" pkg="map_server" type="map_server" args="$(find jetfalcon_slam)/map/$(arg map_file)"/>
 
     <!-- amcl -->
+    <remap from="/scan" to="/$(arg vehicle)/scan"/>
     <node pkg="amcl" type="amcl" name="amcl" output="screen">
-        <rosparam command="load" file="$(arg pkg_path)/param/amcl/default.yaml"/>
+        <rosparam command="load" file="$(arg pkg_path)/param/amcl/$(arg vehicle).yaml"/>
+        <param name="base_frame_id" type="str" value="$(arg vehicle)_base_footprint"/>
     </node>
 
     <!-- Navigation stack -->
     <!-- move_base -->
-    <node>
-        <!-- parameters -->>
-        <!-- local_planner -->
-        <rosparam command="load" file="$(arg pkg_path)/param/local_planner/$(arg local_planner).yaml"/>
-
-        <!-- local_costmap -->
-        <rosparam command="load" file="$(arg pkg_path)/param/local_costmap/default.yaml"/>
-
+    <node pkg="$(arg node_name)" type="$(arg node_name)" name="$(arg node_name)" respawn="false">
+        <!-- parameters -->
         <!-- global_planner -->
-        <rosparam command="load" file="$(arg pkg_path)/param/global_planner/default.yaml"/>
+        <rosparam command="load" file="$(arg pkg_path)/param/$(arg node_name)/global_planner/$(arg global_planner)/$(arg vehicle).yaml"/>
 
         <!-- global_costmap -->
-        <rosparam command="load" file="$(arg pkg_path)/param/global_costmap/default.yaml"/>
+        <rosparam command="load" file="$(arg pkg_path)/param/$(arg node_name)/global_costmap/$(arg vehicle).yaml"/>
+        <param name="global_costmap/robot_base_frame" type="str" value="$(arg vehicle)_base_footprint"/>
+        <param name="global_costmap/$(arg costmap_plugin_sensor_source)/sensor_frame" type="str" value="$(arg vehicle)_laser_frame"/>
+        <param name="global_costmap/$(arg costmap_plugin_sensor_source)/topic" type="str" value="/$(arg vehicle)/scan"/>
+
+        <!-- local_planner -->
+        <rosparam command="load" file="$(arg pkg_path)/param/$(arg node_name)/local_planner/$(arg local_planner)/$(arg vehicle).yaml"/>
+
+        <!-- local_costmap -->
+        <rosparam command="load" file="$(arg pkg_path)/param/$(arg node_name)/local_costmap/$(arg vehicle).yaml"/>
+        <param name="local_costmap/robot_base_frame" type="str" value="$(arg vehicle)_base_footprint"/>
+        <param name="local_costmap/$(arg costmap_plugin_sensor_source)/sensor_frame" type="str" value="$(arg vehicle)_laser_frame"/>
+        <param name="local_costmap/$(arg costmap_plugin_sensor_source)/topic" type="str" value="/$(arg vehicle)/scan"/>
+        
 
         <!-- move_base -->
-        <rosparam command="load" file="$(arg pkg_path)/param/move_base/default.yaml"/>
+        <rosparam command="load" file="$(arg pkg_path)/param/$(arg node_name)/$(arg vehicle).yaml"/>
 
     </node>
+
+    <group if="$(arg open_rviz)">
+        <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(arg pkg_path)/rviz/jetfalcon_nav_$(arg local_planner).rviz"/>
+    </group>
 
 </launch>

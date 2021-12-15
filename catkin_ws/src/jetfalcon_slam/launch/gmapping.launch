@@ -10,9 +10,9 @@
     <!-- node gmapping -->>
     <remap from="scan" to="/$(arg vehicle)/scan"/>
     <node pkg="$(arg pkg_name)" type="slam_$(arg pkg_name)" name="slam_$(arg pkg_name)" output="screen">
-        <rosparam command="load" file="$(find jetfalcon_slam)/param/$(arg vehicle).yaml"/>
+        <rosparam command="load" file="$(find jetfalcon_slam)/param/$(arg pkg_name)/$(arg vehicle).yaml"/>
         <param name="odom_frame" type="str" value="$(arg odom_frame)"/>
-        <param name="base_frame" type="str" value="/$(arg vehicle)/$(arg base_frame)"/>
+        <param name="base_frame" type="str" value="$(arg vehicle)_$(arg base_frame)"/>
     </node>
 
     <group if="$(arg open_rviz)">
