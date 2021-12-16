@@ -56,7 +56,7 @@ power_mode(){
 }
 
 apt_install(){
-<<<'###comment'
+<<'###comment'
     Use apt install ros2 dependencies for this project
     Args:
       $1: project name
