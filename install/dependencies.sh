@@ -124,7 +124,9 @@ apt_install(){
                      ros-${_ros_distro}-image-publisher \
                      ros-${_ros_distro}-teleop-twist-keyboard \
                      byobu \
-                     terminator
+                     terminator \
+                     #Adafruit-MotorHAT \
+                     #Adafruit-SSD1306
 
 }
 
