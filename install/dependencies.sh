@@ -40,6 +40,37 @@ hardware_architecture=$(uname -i)
 project_name="jetfalcon"
 
 # Functions 
+
+text_color(){
+<<"###comment"
+	Select color of text
+	  Args: 
+	    $1: color
+		$2: ground, default is fore, can select "fore" or "back"
+	  Return: code of color
+###comment
+	color=("black" "red" "green" "yellow" "blue" "purple" "cyan" "white") 
+	declare -A color_code
+	initial_color_code=30
+	for _color in ${color[*]};
+	do
+		color_code[$_color]=$initial_color_code
+		initial_color_code=$(($initial_color_code + 1))
+	done
+
+	if [ $# -eq 1 ]; then
+		echo "${color_code[$1]}"
+	else
+		if [ "$2" == "fore" ]; then
+			echo "${color_code[$1]}"
+		elif [ "$2" == "back" ]; then
+			echo $((${color_code[$1]} + 10))
+		else
+			echo "${color_code[$1]}"
+		fi
+	fi
+}
+
 power_mode(){
 <<'###comment'
     Setup Jetson nano power mode.
@@ -108,7 +139,7 @@ setup_ydlidar(){
 ###comment
     workspace="$HOME/$1/catkin_ws/src/ydlidar_ros"
     echo "Setup YDLidar X4 , and it information in ~/${workspace}/README.md "
-    cd ~/${workspace}/startup
+    cd ${workspace}/startup
     sudo chmod 777 ./*
     sudo sh initenv.sh
     sudo udevadm control --reload-rules
@@ -119,13 +150,17 @@ no_machine(){
 <<'###comment'
     Downloads and Install NoMachine
 ###comment
-
-    if test -d "/usr/NX"; then
-        echo "NoMachine existed and skip the installations step."
+    architecture=$1
+    if [ "${architecture}" == "aarch64"  ]; then
+        if test -d "/usr/NX"; then
+            echo "NoMachine existed and skip the installations step."
+        else
+            echo "Downloads Nomachine in $HOME/Downloads and install from the directory."
+            wget https://www.nomachine.com/free/arm/v8/deb -O ~/Downloads/nomachine.deb
+            sudo dpkg -i ~/Downloads/nomachine.deb
+        fi
     else
-        echo "Downloads Nomachine in $HOME/Downloads and install from the directory."
-        wget https://www.nomachine.com/free/arm/v8/deb -O ~/Downloads/nomachine.deb
-        sudo dpkg -i ~/Downloads/nomachine.deb
+        echo -e "\e[$(text_color yellow)mYou don't use Jetson nano! You can check the webiste to install noMachine: https://www.nomachine.com/ .\e[0m"
     fi
 }
 
@@ -133,5 +168,5 @@ no_machine(){
 power_mode $hardware_architecture
 apt_install $ros_distro
 setup_authority
-setup_ydlidar $project_name  
-no_machine
+setup_ydlidar $project_name 
+no_machine $hardware_architecture
