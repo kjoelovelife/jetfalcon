@@ -122,6 +122,7 @@ apt_install(){
                      ros-${_ros_distro}-vision-msgs \
                      ros-${_ros_distro}-image-transport \
                      ros-${_ros_distro}-image-publisher \
+                     ros-${_ros_distro}-teleop-twist-keyboard \
                      byobu \
                      terminator
 
