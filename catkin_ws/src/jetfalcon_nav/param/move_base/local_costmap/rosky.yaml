@@ -18,7 +18,7 @@ local_costmap:
     #footprint: [[-0.1, -0.1], [-0.1, 0.1], [0.1, 0.1], [0.1, -0.1]] # The footprint of the robot specified in the robot_base_frame coordinate frame as a list in the format: [ [x1, y1], [x2, y2], ...., [xn, yn] ]. 
                                                                      ## The footprint specification assumes the center point of the robot is at (0.0, 0.0) in the robot_base_frame and that the points are specified in meters, 
                                                                      ## both clockwise and counter-clockwise orderings of points are supported.
-    #robot_radius: 0.18                                              # The radius of the robot in meters, this parameter should only be set for circular robots, 
+    robot_radius: 0.06                                               # The radius of the robot in meters, this parameter should only be set for circular robots, 
                                                                      ## all others should use the "footprint" parameter described above.
     #footprint_padding: 0.02
              
@@ -65,7 +65,7 @@ local_costmap:
                                            ## Default is 3.0
 
     inflation_layer:
-        inflation_radius: 2.5              # The radius in meters to which the map inflates obstacle cost values.
+        inflation_radius: 0.55             # The radius in meters to which the map inflates obstacle cost values.
                                            ## Default is 0.55
         cost_scaling_factor: 6.0           # A scaling factor to apply to cost values during inflation. 
                                            ## The cost function is computed as follows for all cells in the costmap further than the inscribed radius distance and closer than the inflation radius distance away from an actual obstacle:

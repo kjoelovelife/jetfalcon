@@ -1,6 +1,6 @@
-calibration_time: "2021-12-08"
+calibration_time: '2021_12_20_14_42_49'
+gain: 1.0
 length: 125.0
 radius: 32.5
-gain: 1.0
-trim: 0.0
 rpm_5v: 83
+trim: 0.0

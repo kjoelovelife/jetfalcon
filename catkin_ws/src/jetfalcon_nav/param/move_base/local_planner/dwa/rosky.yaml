@@ -10,8 +10,8 @@ DWAPlannerROS:
   min_vel_x: 0.05                # The minimum x velocity for the robot in m/s, negative for backwards motion.
   max_vel_y: 0.0                 # The maximum y velocity for the robot in m/s
   min_vel_y: 0.0                 # The minimum y velocity for the robot in m/s
-  max_vel_theta: 0.1             # The absolute value of the maximum rotational velocity for the robot in rad/s
-  min_vel_theta: 0.05            # The absolute value of the minimum rotational velocity for the robot in rad/s
+  max_vel_theta: 1.0             # The absolute value of the maximum rotational velocity for the robot in rad/s
+  min_vel_theta: 0.5             # The absolute value of the minimum rotational velocity for the robot in rad/s
 
   # Goal Tolerance Parameters
   yaw_goal_tolerance: 0.8        # The tolerance in radians for the controller in yaw/rotation when achieving its goal

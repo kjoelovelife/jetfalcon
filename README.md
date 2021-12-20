@@ -1,5 +1,7 @@
+###### tags: `ROS1` `Jetson nano`
+
 # Jetfalcon
-A complete navigation package for Jetson nano with differential drive configuration.
+
 This project is about how to use ROS1 on Jetson Nano 4GB Developer Kit with differential drive configuration.
 
 [![Jetfalcon](https://i.imgur.com/heaSful.jpg)](https://www.icshop.com.tw/product-page.php?27398)
@@ -31,7 +33,7 @@ Suggest visiting in order:
 
 | Example Name | Description  |
 | ------------ | -------------|
-| [0. setup environment](https://hackmd.io/@weichih-lin/jetfalcon_and_setup_environment) | use simple command to setup operating environment.        |
+| [0. setup environment](https://hackmd.io/@weichih-lin/jetfalcon_and_setup_environment) | Use simple command to setup operating environment.        |
 | [1. Jetfalcon and teleoperation](https://hackmd.io/@weichih-lin/jetfalcon_and_teleoperation)  | Learn how to use teleop_twist_keyboard to control jetfalcon |
-| [2. Jetfalcon and SLAM]() | to be continued ...  |
-| [3. jetfalcon_nav]()  | to be continued ...  |
+| [2. Jetfalcon and SLAM](https://hackmd.io/@weichih-lin/jetfalcon_slam) | Learn how to use SLAM to make a map |
+| [3. Jetfalcon and Navigation](https://hackmd.io/@weichih-lin/jetfalcon_nav)  | Learn how to use ROS to navigate the robot |
