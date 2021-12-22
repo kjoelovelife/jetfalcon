@@ -41,7 +41,7 @@ project_name="jetfalcon"
 
 # Functions 
 
-text_color(){
+function text_color(){
 <<"###comment"
 	Select color of text
 	  Args: 
@@ -71,7 +71,7 @@ text_color(){
 	fi
 }
 
-power_mode(){
+function power_mode(){
 <<'###comment'
     Setup Jetson nano power mode.
     Args:
@@ -86,7 +86,7 @@ power_mode(){
     fi
 }
 
-apt_install(){
+function apt_install(){
 <<'###comment'
     Use apt install ros2 dependencies for this project
     Args:
@@ -130,11 +130,11 @@ apt_install(){
 
 }
 
-setup_authority(){
+function setup_authority(){
     sudo usermod -aG i2c $USER
 }
 
-setup_ydlidar(){
+function setup_ydlidar(){
 <<'###comment'
     Add udev rules for Ydlidar
     Args:
@@ -149,7 +149,7 @@ setup_ydlidar(){
     sudo udevadm trigger   
 }
 
-no_machine(){
+function no_machine(){
 <<'###comment'
     Downloads and Install NoMachine
 ###comment

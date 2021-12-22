@@ -6,7 +6,7 @@ workspace="${HOME}/${project}/catkin_ws/src"
 
 # set functions
 
-text_color(){
+function text_color(){
 <<"###comment"
 	Select color of text
 	  Args: 
@@ -36,7 +36,7 @@ text_color(){
 	fi
 }
 
-get_path(){
+function get_path(){
 <<'###comment'
 	Check file path
 	  Args:
@@ -47,7 +47,7 @@ get_path(){
 	echo "${workspace}/${project}_$1/param"
 }
 
-check_file(){
+function check_file(){
 <<'###comment'
 	Check file existed or not
 	Args:
@@ -61,7 +61,7 @@ check_file(){
 	echo $check
 }
 
-copy_parameter(){
+function copy_parameter(){
 	#Copy file from original path to target path in workspace
 	package_number=$#
 	for arg in $@;
@@ -102,7 +102,7 @@ copy_parameter(){
 	done
 }
 
-check_path(){
+function check_path(){
     folder=$(ls -l $1 | awk '/^d/ {print $NF}')
 	echo $folder
 }
