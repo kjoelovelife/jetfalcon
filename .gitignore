@@ -51,4 +51,4 @@ qtcreator-*
 CATKIN_IGNORE
 
 # map
-catkin_ws/src/jetfalcon_slam/map/*
+#catkin_ws/src/jetfalcon_slam/map/*

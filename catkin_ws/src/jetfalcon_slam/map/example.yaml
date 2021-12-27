@@ -1,0 +1,9 @@
+image: /home/ros/jetfalcon/catkin_ws/src/jetfalcon_slam/map/example.pgm         # Name of the file containing the image of the generated Map.
+                                                                                ## PGM (Portable Gray Map) file.
+mode: trinary
+resolution: 0.025                                                               # Resolution of the map (in meters/pixel).
+origin: [-26.2, -27.8, 0]                                                       # Coordinates of the lower-left pixel in the map. This coordinates are given in 2D (x,y). 
+                                                                                ## The third value indicates the rotation. If there's no rotation, the value will be 0.
+negate: 0                                                                       # Inverts the colours of the Map. By default, white means completely free and black means completely occupied.
+occupied_thresh: 0.65                                                           # Pixels which have a value greater than this value will be considered as a completely occupied zone.
+free_thresh: 0.25                                                               # Pixels which have a value smaller than this value will be considered as a completely free zone.
