@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- arguments of launch -->
+    <arg name="vehicle" default="$(env VEHICLE_NAME)"/>
+    <arg name="pkg_name" default="robot_localization"/>
+    <arg name="node_name" default="ekf_localization_node"/>
+    <arg name="param_file_name" default="default"/>
+
+    <!-- If running the launch bringup.launch-->
+    <arg name="cmd_vel_topic_from" default="cmd_vel"/>
+    <arg name="odom_topic_from" default="/odom"/>
+    <arg name="odom_frame_from" default="/base_odom"/>
+    <arg name="base_link_frame_from" default="/base_link"/>
+    <arg name="world_frame_from" default="/base_odom"/>
+    <arg name="odom0_from" default="/base_odom"/>
+
+
+    <!-- Run the UKF Localization node -->
+    <node pkg="$(arg pkg_name)" type="$(arg node_name)" name="$(arg node_name)" clear_params="true">
+        <!-- The reference frames -->
+        <param name="odom_frame"      type="str" value="$(arg odom_frame_from)"/>
+        <param name="base_link_frame" type="str" value="$(arg base_link_frame_from)"/>
+        <param name="world_frame"     type="str" value="$(arg world_frame_from)"/>
+        
+        <!-- Fuse sensors -->
+        <param name="odom0"           type="str" value="$(arg odom0_from)"/>
+        
+        <!-- Another parameters load form yaml-->
+        <rosparam command="load" file="$(find jetfalcon_bringup)/param/$(arg node_name)/$(arg param_file_name).yaml"/>
+    </node>
+
+</launch>

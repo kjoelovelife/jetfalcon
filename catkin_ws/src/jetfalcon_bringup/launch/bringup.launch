@@ -9,7 +9,7 @@
     <arg name="node_initialize_reconfigure" default="initialize_reconfigure"/>
     <arg name="node_ydlidar" default="ydlidar_node"/>
     <arg name="node_odometry" default="rf2o_laser_odometry"/>
-
+    <arg name="ekf" default="true"/>
 
     <group ns="$(arg vehicle)">
 
@@ -52,6 +52,17 @@
             <param name="odom_frmae_id"         type="str" value="odom"/>                           <!-- frame_id (tf) to publish the odometry estimations -->
             <rosparam command="load" file="$(find jetfalcon_bringup)/param/$(arg node_odometry)/$(arg vehicle).yaml"/>
         </node>
+
+        <group if="$(arg ekf)">
+        <!-- robot localization ekf -->
+        <include file="$(find jetfalcon_bringup)/launch/ekf_localization_node.launch">
+            <arg name="odom_frame_from"  value="odom"/>
+            <arg name="base_link_frame_from"   value="$(arg vehicle)_base_footprint"/>
+            <arg name="world_frame_from" value="odom"/>
+            <arg name="odom0_from"       value="odom"/>
+            <arg name="param_file_name"  value="$(arg vehicle)"/>
+        </include>
+        </group>  <!-- ekf -->
 
     </group>
 

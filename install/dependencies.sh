@@ -123,6 +123,7 @@ function apt_install(){
                      ros-${_ros_distro}-image-transport \
                      ros-${_ros_distro}-image-publisher \
                      ros-${_ros_distro}-teleop-twist-keyboard \
+                     ros-${_ros_distro}-robot-localization \
                      byobu \
                      terminator \
                      #Adafruit-MotorHAT \
