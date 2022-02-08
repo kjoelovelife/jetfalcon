@@ -10,6 +10,8 @@
     <arg name="node_ydlidar" default="ydlidar_node"/>
     <arg name="node_odometry" default="rf2o_laser_odometry"/>
     <arg name="ekf" default="true"/>
+    <arg name="cmos_lidar" default="false"/>
+    <arg name="laser_frame_id" default="$(arg vehicle)_laser_frame"/>
 
     <group ns="$(arg vehicle)">
 
@@ -30,11 +32,22 @@
             <rosparam command="load" file="$(find jetfalcon_bringup)/param/$(arg node_motor)/$(arg vehicle).yaml"/>
         </node>
 
+        <!-- lidar -->
         <!-- node_ydlidar -->
-        <node pkg="ydlidar_ros" type="$(arg node_ydlidar)" name="$(arg node_ydlidar)" output="screen" respawn="false">
-            <rosparam command="load" file="$(find jetfalcon_bringup)/param/$(arg node_ydlidar)/$(arg vehicle).yaml"/>
-            <param name="frame_id" type="string" value="$(arg vehicle)_laser_frame"/>
-        </node>
+        <group unless="$(arg cmos_lidar)">
+            <node pkg="ydlidar_ros" type="$(arg node_ydlidar)" name="$(arg node_ydlidar)" output="screen" respawn="false">
+                <rosparam command="load" file="$(find jetfalcon_bringup)/param/$(arg node_ydlidar)/$(arg vehicle).yaml"/>
+                <param name="frame_id" type="string" value="$(arg vehicle)_laser_frame"/>
+            </node>
+        </group>
+
+	<!-- node_cmos_lidar -->
+        <group if="$(arg cmos_lidar)">
+            <node name="cmos_lidar_publisher"  pkg="cmos_ros_driver"  type="cmos_ros_driver_node" output="screen" respawn="false">
+                <param name="frame_id" type="string" value="$(arg vehicle)_laser_frame"/>
+            </node>
+        </group>
+
 
         <!-- static_transform_publisher -->
         <node pkg="tf" type="static_transform_publisher" name="base_footprint_to_base_link"
