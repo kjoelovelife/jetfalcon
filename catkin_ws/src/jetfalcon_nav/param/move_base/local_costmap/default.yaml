@@ -1,75 +1,10 @@
 # Reference: http://wiki.ros.org/costmap_2d
 local_costmap:
-    # Coordinate frame and tf parameters
-    global_frame: odom                     # The global frame for the costmap to operate in.
-    #robot_base_frame: base_footprint      # The name of the frame for the base link of the robot.
-                                           ## used in navigation.launch
-    transform_tolerance: 1.0               # Specifies the delay in transform (tf) data that is tolerable in seconds. 
-                                           ## This parameter serves as a safeguard to losing a link in the tf tree while still allowing an amount of latency the user is comfortable with to exist in the system. 
-                                           ## For example, a transform being 0.2 seconds out-of-date may be tolerable, but a transform being 8 seconds out of date is not. 
-                                           ## If the tf transform between the coordinate frames specified by the "global_frame" and "robot_base_frame" parameters is transform_tolerance seconds older than ros::Time::now(), 
-                                           ## then the navigation stack will stop the robot.
-                                           ## Default is 0.2.                                        
-    # Rate parameters
-    update_frequency: 2.0                  # The frequency in Hz for the map to be updated. Default is 5.0
-    publish_frequency: 0.5                 # The frequency in Hz for the map to be publish display information. Default is 0.0.
-                             
-    # Robot description parameters
-    #footprint: [[-0.1, -0.1], [-0.1, 0.1], [0.1, 0.1], [0.1, -0.1]] # The footprint of the robot specified in the robot_base_frame coordinate frame as a list in the format: [ [x1, y1], [x2, y2], ...., [xn, yn] ]. 
-                                                                     ## The footprint specification assumes the center point of the robot is at (0.0, 0.0) in the robot_base_frame and that the points are specified in meters, 
-                                                                     ## both clockwise and counter-clockwise orderings of points are supported.
-    #robot_radius: 0.18                                              # The radius of the robot in meters, this parameter should only be set for circular robots, 
-                                                                     ## all others should use the "footprint" parameter described above.
-    #footprint_padding: 0.02
-             
-    # Map management parameters
-    #static_map: false  
+    global_frame: odom
     rolling_window: true
-    width: 10
-    height: 10
-    resolution: 0.05
-
-
-    # Plugins
-    plugins:                               # Sequence of plugin specifications, one per layer. Each specification is a dictionary with name and type fields. 
-                                           # The name is used to define the parameter namespace for the plugin. See the tutorials for examples.     
-        - {name: obstacle_layer,  type: "costmap_2d::ObstacleLayer"}      # reference: http://wiki.ros.org/costmap_2d/hydro/obstacles
-        - {name: inflation_layer, type: "costmap_2d::InflationLayer"}     # reference: http://wiki.ros.org/costmap_2d/hydro/inflation
-
-    obstacle_layer:
-        observation_sources: laser_scan_sensor   # A list of observation source names separated by spaces. 
-                                                 ## This defines each of the <source_name> namespaces defined below.
-        laser_scan_sensor:                 # Parameters "sensor_frame" and "topic" are used in navigation.launch
-          #sensor_frame: laser             # The frame of the origin of the sensor. Leave empty to attempt to read the frame from sensor data.
-                                           ## The frame can be read from both sensor_msgs/LaserScan, sensor_msgs/PointCloud, and sensor_msgs/PointCloud2 messages.
-          #topic: scan                     # The topic on which sensor data comes in for this source. Defaults to the name of the source. 
-          data_type: LaserScan             # The data type associated with the topic, right now only "PointCloud", "PointCloud2", and "LaserScan" are supported.
-          clearing: true                   # Whether or not this observation should be used to clear out freespace.
-          observation_persistence: 0.0     # How long to keep each sensor reading in seconds. A value of 0.0 will only keep the most recent reading.
-          marking: true                    # Whether or not this observation should be used to mark obstacles.  
-          obstacle_range: 2.5              # http://wiki.ros.org/costmap_2d/hydro/obstacles
-          raytrace_range: 3.0
-          inf_is_valid : false
-          max_obstacle_height: 2.0         
-          min_obstacle_height: 0.0 
-
-
-        max_obstacle_height: 2.0           # The maximum height of any obstacle to be inserted into the costmap in meters. 
-                                           ## This parameter should be set to be slightly higher than the height of your robot.
-                                           ## Default is 2.0.
-        obstacle_range: 2.5                # The default maximum distance from the robot at which an obstacle will be inserted into the cost map in meters. 
-                                           ## This can be over-ridden on a per-sensor basis.
-                                           ## Default is 2.5
-        raytrace_range: 3.0                # The default range in meters at which to raytrace out obstacles from the map using sensor data. 
-                                           ## This can be over-ridden on a per-sensor basis.
-                                           ## Default is 3.0
-
-    inflation_layer:
-        inflation_radius: 2.5              # The radius in meters to which the map inflates obstacle cost values.
-                                           ## Default is 0.55
-        cost_scaling_factor: 6.0           # A scaling factor to apply to cost values during inflation. 
-                                           ## The cost function is computed as follows for all cells in the costmap further than the inscribed radius distance and closer than the inflation radius distance away from an actual obstacle:
-                                           ## exp(-1.0 * cost_scaling_factor * (distance_from_obstacle - inscribed_radius)) * (costmap_2d::INSCRIBED_INFLATED_OBSTACLE - 1), 
-                                           ## where costmap_2d::INSCRIBED_INFLATED_OBSTACLE is currently 254. NOTE: since the cost_scaling_factor is multiplied by a negative in the formula, 
-                                           ## increasing the factor will decrease the resulting cost values.
-                                           ## Default is 10.0
+    static_map: false
+    width: 5.0
+    height: 5.0
+    plugins:
+        - {name: static_map_layer,              type: "costmap_2d::StaticLayer"}
+        - {name: inflation_layer,               type: "costmap_2d::InflationLayer"}
