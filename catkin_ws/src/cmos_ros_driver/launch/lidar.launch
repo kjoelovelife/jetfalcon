@@ -1,0 +1,10 @@
+<launch>
+  <node name="cmos_lidar_publisher"  pkg="cmos_ros_driver"  type="cmos_ros_driver_node" output="screen" respawn="false" >
+
+  </node>
+
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser4"
+    args="0.0 0.0 0.2 0.0 0.0 0.0 /base_footprint /laser_frame 40" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find cmos_ros_driver)/launch/lidar.rviz" />
+</launch>
