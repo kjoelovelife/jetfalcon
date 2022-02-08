@@ -24,25 +24,41 @@
 
     <!-- Navigation stack -->
     <!-- move_base -->
-    <node pkg="$(arg node_name)" type="$(arg node_name)" name="$(arg node_name)" respawn="false">
+    <node pkg="$(arg node_name)" type="$(arg node_name)" name="$(arg node_name)" respawn="false" clear_params="true">
         <!-- parameters -->
         <!-- global_planner -->
         <rosparam command="load" file="$(arg pkg_path)/param/$(arg node_name)/global_planner/$(arg global_planner)/$(arg vehicle).yaml"/>
 
-        <!-- global_costmap -->
-        <rosparam command="load" file="$(arg pkg_path)/param/$(arg node_name)/global_costmap/$(arg vehicle).yaml"/>
-        <param name="global_costmap/robot_base_frame" type="str" value="$(arg vehicle)_base_footprint"/>
-        <param name="global_costmap/$(arg costmap_plugin_sensor_source)/sensor_frame" type="str" value="$(arg vehicle)_laser_frame"/>
-        <param name="global_costmap/$(arg costmap_plugin_sensor_source)/topic" type="str" value="/$(arg vehicle)/scan"/>
-
         <!-- local_planner -->
         <rosparam command="load" file="$(arg pkg_path)/param/$(arg node_name)/local_planner/$(arg local_planner)/$(arg vehicle).yaml"/>
 
+        <!-- global_costmap -->
+            <!-- observation sources located in costmap_common.yaml -->
+            <rosparam ns="global_costmap" command="load" file="$(arg pkg_path)/param/$(arg node_name)/common_costmap/$(arg vehicle).yaml"/>
+
+            <!-- frame parameter -->
+            <param name="global_costmap/robot_base_frame" type="str" value="$(arg vehicle)_base_footprint"/>
+            <param name="global_costmap/$(arg costmap_plugin_sensor_source)/sensor_frame" type="str" value="$(arg vehicle)_laser_frame"/>
+
+            <!-- topic parameter -->
+            <param name="global_costmap/$(arg costmap_plugin_sensor_source)/topic" type="str" value="/$(arg vehicle)/scan"/>
+
+            <!-- costmapt parameter-->
+            <rosparam command="load" file="$(arg pkg_path)/param/$(arg node_name)/global_costmap/$(arg vehicle).yaml"/>
+
         <!-- local_costmap -->
-        <rosparam command="load" file="$(arg pkg_path)/param/$(arg node_name)/local_costmap/$(arg vehicle).yaml"/>
-        <param name="local_costmap/robot_base_frame" type="str" value="$(arg vehicle)_base_footprint"/>
-        <param name="local_costmap/$(arg costmap_plugin_sensor_source)/sensor_frame" type="str" value="$(arg vehicle)_laser_frame"/>
-        <param name="local_costmap/$(arg costmap_plugin_sensor_source)/topic" type="str" value="/$(arg vehicle)/scan"/>
+            <!-- observation sources located in costmap_common.yaml -->
+            <rosparam ns="local_costmap" command="load" file="$(arg pkg_path)/param/$(arg node_name)/common_costmap/$(arg vehicle).yaml"/>
+
+            <!-- frame parameter -->
+            <param name="local_costmap/robot_base_frame" type="str" value="$(arg vehicle)_base_footprint"/>
+            <param name="local_costmap/$(arg costmap_plugin_sensor_source)/sensor_frame" type="str" value="$(arg vehicle)_laser_frame"/>
+
+            <!-- topic parameter -->
+            <param name="local_costmap/$(arg costmap_plugin_sensor_source)/topic" type="str" value="/$(arg vehicle)/scan"/>
+
+            <!-- costmapt parameter-->
+            <rosparam command="load" file="$(arg pkg_path)/param/$(arg node_name)/local_costmap/$(arg vehicle).yaml"/>
         
 
         <!-- move_base -->
